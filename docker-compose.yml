@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: poc-keycloak
+    ports:
+      - "5000:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - ./keycloak_imports:/opt/keycloak/data/import/
+    command: ["start-dev", "--import-realm","--verbose"]
+
+  keycloak-authorization-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: keycloak-authorization-api
+    depends_on:
+      - keycloak
+    ports:
+      - "5001:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
