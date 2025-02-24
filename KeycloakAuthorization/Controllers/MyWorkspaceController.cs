@@ -5,11 +5,18 @@ namespace KeycloakAuthorization.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+public class MyWorkspaceController : ControllerBase
 {
     [Authorize("my-workspace#read")]
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public IActionResult Get()
+    {
+        return Ok();
+    }
+
+    [Authorize("my-workspace#write")]
+    [HttpDelete]
+    public IActionResult Delete()
     {
         return Ok();
     }
