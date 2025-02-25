@@ -1,0 +1,228 @@
+{
+	"info": {
+		"_postman_id": "631d94a1-3ca7-4b81-a3dd-6a56d60eea48",
+		"name": "KeyCloakAuthorization",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "306790"
+	},
+	"item": [
+		{
+			"name": "token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "bem_user1",
+							"description": "bem_user1, bem_admin1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "bem",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "bem-client",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "AQXrW4Inbt8RyuMHxASqXvNNmZGTAn7V",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{keycloak_server}}/realms/bem/protocol/openid-connect/token",
+					"host": [
+						"{{keycloak_server}}"
+					],
+					"path": [
+						"realms",
+						"bem",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{keycloak_authorization_api}}/token?username=bem_admin1&password=bem",
+					"host": [
+						"{{keycloak_authorization_api}}"
+					],
+					"path": [
+						"token"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "bem_admin1"
+						},
+						{
+							"key": "password",
+							"value": "bem"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uma-ticket",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "permission",
+							"value": "my-workspace#read",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "urn:ietf:params:oauth:grant-type:uma-ticket",
+							"type": "text"
+						},
+						{
+							"key": "audience",
+							"value": "bem-client",
+							"type": "text"
+						},
+						{
+							"key": "response_mode",
+							"value": "decision",
+							"description": "permissions ou decision",
+							"type": "text"
+						},
+						{
+							"key": "ticket",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{keycloak_server}}/realms/bem/protocol/openid-connect/token",
+					"host": [
+						"{{keycloak_server}}"
+					],
+					"path": [
+						"realms",
+						"bem",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				},
+				"description": "[https://www.keycloak.org/docs/latest/authorization_services/#_service_obtaining_permissions](https://www.keycloak.org/docs/latest/authorization_services/#_service_obtaining_permissions)"
+			},
+			"response": []
+		},
+		{
+			"name": "myworkspace#read",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{keycloak_authorization_api}}/MyWorkspace",
+					"host": [
+						"{{keycloak_authorization_api}}"
+					],
+					"path": [
+						"MyWorkspace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "myworkspace#write",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{keycloak_authorization_api}}/MyWorkspace",
+					"host": [
+						"{{keycloak_authorization_api}}"
+					],
+					"path": [
+						"MyWorkspace"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJMcWRyUWV3czBqTE1NVFdZcXFISnZUTVg0YmhYclpLcU5WdmFuNTFvWkdVIn0.eyJleHAiOjE3NDA1MTI1MTEsImlhdCI6MTc0MDUxMjIxMSwianRpIjoiMWE0NWNiMmItNGYzMS00NmFjLWI1YmItZGQxNmNjZTMyZTY5IiwiaXNzIjoiaHR0cDovL2tleWNsb2FrOjgwODAvcmVhbG1zL2JlbSIsInN1YiI6ImM5ODc2NTQzLWUyMTAtNGZlZC1iYTk4LTA5ODc2NTQzMjFkYyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImJlbS1jbGllbnQiLCJzaWQiOiJhZGJmOWNmZS04NDlkLTQ3ZDgtOTc1OC04MTYyNDcyZWMwM2EiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIi8qIl0sInJlc291cmNlX2FjY2VzcyI6eyJiZW0tY2xpZW50Ijp7InJvbGVzIjpbIkFkbWluIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJCZW0gQWRtaW4gMSIsInByZWZlcnJlZF91c2VybmFtZSI6ImJlbV9hZG1pbjEiLCJnaXZlbl9uYW1lIjoiQmVtIiwiZmFtaWx5X25hbWUiOiJBZG1pbiAxIiwiZW1haWwiOiJiZW1fYWRtaW4xQGJlbS5jb20ifQ.nDQ1SjQfgtbh4pS9l5KbH0y5WQ6U0owNX3j8H9BA4RdzzCuNhzundDrrRWQBTHr-xQ5AcGa4lf9sTWRBB8IKP0qhIsGlJUeVWN6YC7L50tUnw2AiYT6YAOqVBT-vg01xFFUAbpcDRkdBCauLdmpz2dehMBcY8ZZJ6LGqUKKs6jiENCfHTkwMIPHp9nMEmwrJgEhrsvKIVKxecl6LsUK6BjNlOv7Efu1RSXmQnw1IDgrILFTsERhqW0ZN3SBkrzfdYT9LPqS1CzZJlgcCZnvWaAZjQMKdlZoFBUU6WQ0kYwzlBQrCb1Ak3vl6UlV3G71MHziEijxXeEvrXW6tivK9wA",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "keycloak_server",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "keycloak_authorization_api",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
