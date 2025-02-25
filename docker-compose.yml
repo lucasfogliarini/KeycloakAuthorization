@@ -12,6 +12,8 @@ services:
     volumes:
       - ./keycloak_imports:/opt/keycloak/data/import/
     command: ["start-dev", "--import-realm","--verbose"]
+    networks:
+      - app-network
 
   keycloak-authorization-api:
     build:
