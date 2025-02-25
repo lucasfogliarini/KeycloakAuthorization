@@ -12,7 +12,6 @@ WORKDIR /app
 
 COPY --from=build /app/build .
 
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 5001
 
 ENTRYPOINT ["dotnet", "KeycloakAuthorization.dll"]

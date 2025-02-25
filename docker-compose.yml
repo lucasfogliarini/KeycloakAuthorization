@@ -3,7 +3,7 @@ version: "3.8"
 services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
-    container_name: poc-keycloak
+    container_name: keycloak
     ports:
       - "5000:8080"
     environment:
@@ -21,7 +21,9 @@ services:
     depends_on:
       - keycloak
     ports:
-      - "5001:8080"
+      - "5001:5001"
+    environment:
+      ASPNETCORE_URLS: "http://*:5001"
     networks:
       - app-network
 
