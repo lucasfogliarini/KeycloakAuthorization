@@ -16,8 +16,8 @@ Esta projeto tem como objetivo demonstrar fluxos de autenticação e autorizaç�
     - O container __keycloak-authorization-api__ na porta 5001
 
 ## Como testar as permissões
-
-Para validar os cenários de autorização, acesse a [keycloak-authorization-api](http://localhost:5001/swagger/index.html):
+Esta POC foi desenvolvida com base [neste exemplo de autorização](https://nikiforovall.github.io/keycloak-authorization-services-dotnet/authorization/resources.html) do Keycloak.AuthServices.  
+Para validar todos esses cenários, acesse a [keycloak-authorization-api](http://localhost:5001/swagger/index.html):
 
 1. __Usuário Reader - Consulta de Workspace__  
 Dado que o usuário bem_user1 se autentica e obtém um token  
@@ -45,22 +45,55 @@ O endpoint /Token foi criado para garantir o correto funcionamento em ambientes 
 ## Configuração do Keycloak
 Para facilitar a configuração do ambiente, o arquivo `bem-realm-config.json` de configuração do realm foi incluído na pasta `keycloak_imports` desta POC e é importado automaticamente ao subir o `docker-compose`.
 
-### Configurações do Realm `bem`
+### Configurações do Realm __BEM__
 - **[Usuários](http://localhost:5000/admin/master/console/#/bem/users)**
   - `bem_user1`, senha `bem`
   - `bem_admin1`, senha `bem`
 - **[Client](http://localhost:5000/admin/master/console/#/bem/clients)**
   - `bem-client` com as roles: `Reader` e `Admin`
-- **[Recursos, Scopes, Policies e Permissions](http://localhost:5000/admin/master/console/#/bem/clients/f0c3aa03-f470-4fc9-8ad1-102479c03dea/authorization)**  
-A POC é baseada [nesse exemplo autenticação](https://nikiforovall.github.io/keycloak-authorization-services-dotnet/authorization/resources.html) do Keycloak.AuthServices
-    1. **Policy: Require Reader Role**
-    - Aplica-se à permissão **Read Workspace**
-    - **Read Workspace** está atribuído ao escopo `read`
-    2. **Policy: Require Admin Role**
-    - Aplica-se à permissão **Delete Workspace**
-    - **Delete Workspace** está atribuído ao escopo `write`
-    3. **Resource: my-workspace**
-    - Possui os escopos `read` e `write`
+- **[Recursos, Scopes, Policies e Permissions](http://localhost:5000/admin/master/console/#/bem/clients/f0c3aa03-f470-4fc9-8ad1-102479c03dea/authorization)**
+
+    - **Resource: my-workspace**
+        - Representa um workspace no sistema.
+        - Escopos disponíveis: read, write
+    - **Policy: Require Admin Role**
+        - Define que a permissão Delete Workspace requer a role "Admin".
+        - Permissão: Delete Workspace
+        - Escopo associado: write
+    - **Policy: Require Reader Role**
+        - Define que a permissão Read Workspace requer a role "Reader".
+        - Permissão: Read  Workspace
+        - Escopo associado: read
+    - **Permission: Read Workspace**
+        - Permite a leitura do recurso my-workspace.
+        - Escopo necessário: read
+    - **Permission: Delete Workspace**
+        - Permite a exclusão do recurso my-workspace.
+        - Escopo necessário: write
+
+## Conceitos de Autorização no Keycloak
+
+O Keycloak fornece um sistema de autorização baseado em políticas, permitindo controle detalhado de acesso a recursos protegidos. Os principais conceitos são:
+
+- **[Recurso](http://localhost:5000/admin/master/console/#/bem/clients/f0c3aa03-f470-4fc9-8ad1-102479c03dea/authorization/resources)**  
+
+    Recurso (Resource): Representa uma entidade protegida dentro do sistema, como um endpoint, um documento ou um serviço. No contexto de controle de acesso, um recurso pode possuir diferentes níveis de permissões e escopos associados.
+
+    Ex.: /orders, /orders/:id, my-workspace
+
+- **[Scope](http://localhost:5000/admin/master/console/#/bem/clients/f0c3aa03-f470-4fc9-8ad1-102479c03dea/authorization/scopes)**
+
+    Escopo (Scope): Define os tipos de ações que podem ser realizadas sobre um recurso. Cada escopo representa uma categoria de acesso, como leitura (read) ou escrita (write).
+
+- **[Policy](http://localhost:5000/admin/master/console/#/bem/clients/f0c3aa03-f470-4fc9-8ad1-102479c03dea/authorization/policies)**
+
+    Política (Policy): Define condições para conceder ou negar permissões, podendo ser baseadas em roles, grupos, atributos de usuário ou expressões. 
+
+    Ex.: a política Require Reader Role exige que um usuário tenha a role "Reader" para acessar a permissão Read Workspace.
+
+- **[Permission](http://localhost:5000/admin/master/console/#/bem/clients/f0c3aa03-f470-4fc9-8ad1-102479c03dea/authorization/permissions)**
+
+    Permissão (Permission): Uma Permissão no Keycloak define quais usuários ou clientes podem acessar um Recurso com determinados Escopos. Ela vincula um recurso a uma ou mais Políticas que determinam as condições de acesso.
 
 ## Tecnologias Utilizadas
 - [Keycloak](https://www.keycloak.org/)
