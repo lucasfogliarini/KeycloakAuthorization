@@ -12,8 +12,10 @@ Esta projeto tem como objetivo demonstrar fluxos de autenticação e autorizaç�
    docker-compose up -d
    ```
 3. O docker-compose irá subir a stack `keycloakauthorization` com:  
-    - O container __keycloak__ na porta `5000` com o usuário `admin` e senha `admin` com as configurações predefinidas em `bem-realm-config.json`
-    - O container __keycloak-authorization-api__ na porta 5001
+    - [Keycloak](http://localhost:5000/): subirá na porta `5000`, com configurações predefinidas em `bem-realm-config.json`:
+      - usuário `admin` 
+      - senha `admin` 
+    - [keycloak-authorization-api](http://localhost:5001/swagger): subirá na porta 5001
 
 ## Como testar as permissões
 Esta POC foi desenvolvida com base [neste exemplo de autorização](https://nikiforovall.github.io/keycloak-authorization-services-dotnet/authorization/resources.html) do Keycloak.AuthServices.  
