@@ -10,7 +10,8 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     volumes:
-      - ./keycloak_imports:/opt/keycloak/data/import/
+      - ./keycloak/imports:/opt/keycloak/data/import/
+      - ./keycloak/providers:/opt/keycloak/providers/
     command: ["start-dev", "--import-realm","--verbose"]
     networks:
       - app-network
