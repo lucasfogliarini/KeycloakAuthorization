@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -9,6 +7,8 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+      EVENT_HUB_CONNECTION_STRING: Endpoint=sb://evh-dev-dados-auditoria.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey={key}
+      EVENT_HUB_NAME: auditoria
     volumes:
       - ./keycloak/imports:/opt/keycloak/data/import/
       - ./keycloak/providers:/opt/keycloak/providers/

@@ -1258,9 +1258,11 @@
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
   "smtpServer": {},
-  "eventsEnabled": false,
+  "eventsEnabled": true,
+  "eventsExpiration": 600,
   "eventsListeners": [
-    "jboss-logging"
+    "jboss-logging",
+    "auditoria-event-listener"
   ],
   "enabledEventTypes": [],
   "adminEventsEnabled": false,
